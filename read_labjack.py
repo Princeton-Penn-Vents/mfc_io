@@ -29,6 +29,8 @@ filename = strftime("%Y%m%d_%H%M", localtime()) + '.csv'
 
 
 print("Hit Control-c at any point to quit")
+print("WARNING: only use this software for SHORT recordings. Measurements are only saved at the end.")
+start_time = time.time()  #seconds since 1970
 try:
     while True:
 
@@ -38,16 +40,17 @@ try:
         Vin1 = d.readRegister(AIN1_REGISTER)
         Vin1_array = np.append(Vin1_array, Vin1)
 
-        timestamp = time.time() #seconds since 1970
+        timestamp = time.time() - start_time
         timestamp_array = np.append(timestamp_array, timestamp)
 
-        print("AIN0 = %.3f V, AIN1 = %.3f V, Seconds Since 1970 = %.1f s" % (Vin0, Vin1, timestamp))
+        print("AIN0 = %.3f V, AIN1 = %.3f V, Seconds = %.1f s" % (Vin0, Vin1, timestamp))
 
         # Wait one interval of the sampling rate
         time.sleep(1 / sampling_freq)
 
 except KeyboardInterrupt:
     print("writing file " + filename)
-    np.savetxt(filename, np.transpose([Vin0_array, Vin1_array, timestamp_array]), delimiter=',')
+    header = "AIN0, AIN1, Time"
+    np.savetxt(filename, np.transpose([Vin0_array, Vin1_array, timestamp_array]), header=header, delimiter=',')
     print("written!")
     pass
