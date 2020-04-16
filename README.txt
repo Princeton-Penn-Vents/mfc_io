@@ -7,6 +7,9 @@ MFC flow is read in by the LabJack on AIN0 and GND.
 If an external source, like a function generator is driving the set point, that is read on AIN1 and GND.
 If the computer is generating the setpoint, that is outputted on DAC0 and GND.
 
+The script will read and write to the labjack at an approximate sample rate. To finish a run, type control-c. The voltages and teimstamps are saved in a CSV file.
+
+Note currently saving only occurs at the very end. If you want to make long or overnight runs, let me know and I will modify the code.
 
 TO INSTALL:
 
@@ -21,4 +24,3 @@ cd into the LabJackPython-2.0.0 directory and run:
 >> sudo python setup.py install
 or if that doesnt' work
 >> python setup.py install
-
